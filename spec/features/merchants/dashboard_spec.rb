@@ -595,10 +595,10 @@ RSpec.describe 'Merchant Dashboard' do
         Faker::UniqueGenerator.clear 
         merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
 
-        visit "merchants/#{merchant_1.id}/dashboard" 
-        click_link 'See All Discounts Associated with Merchant' 
+        visit "/merchants/#{merchant_1.id}/dashboard" 
+        click_link 'See All Discounts Associated with Merchant'
 
-        expect(current_path).to eq "merchants/#{merchant_1.id}/discounts"
+        expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
     end
 
     # Where I see all of my bulk discounts including their
