@@ -39,4 +39,16 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
   end
 
   # And each bulk discount listed includes a link to its show page
+  it 'displays the bulk discounts as links to their show page' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    discount_1a = merchant_1.discounts.create!(discount: 0.20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 0.30, threshold: 15)
+
+    visit merchant_discounts_path(merchant_1)
+    click_link "Discount 1"
+
+    expect(current_path).to eq "/discounts/#{discount_1a.id}"
+  end
 end
