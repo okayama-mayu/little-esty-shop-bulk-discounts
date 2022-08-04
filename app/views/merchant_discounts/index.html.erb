@@ -3,3 +3,12 @@
 </div>
 
 <h4>Merchant Discounts</h4>
+<% @facade.discounts_display.each_with_index do |discount, index| %>
+  <div id="discount-<%=index %>">
+    <h5>Discount <%= index + 1 %></h5>
+    <p><%= discount %></p>
+  </div>
+<% end %>
+
+
+

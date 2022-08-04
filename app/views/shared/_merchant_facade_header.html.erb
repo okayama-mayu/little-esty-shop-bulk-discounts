@@ -1,9 +1,9 @@
 <span>
-    <h3><%= @merchant.name %></h3>
+    <h3><%= @facade.merchant.name %></h3>
     <div class='nav-links'>
-        <span id='1' class='top-links'> <%= link_to("Dashboard", "/merchants/#{@merchant.id}/dashboard") %></span>
-        <span id='2' class='top-links'> <%= link_to("My Items", merchant_items_path(@merchant)) %></span>
-        <span id='3' class='top-links'><%= link_to("My Invoices", merchant_invoices_path(@merchant)) %></span>
+        <span id='1' class='top-links'> <%= link_to("Dashboard", "/merchants/#{@facade.merchant.id}/dashboard") %></span>
+        <span id='2' class='top-links'> <%= link_to("My Items", merchant_items_path(@facade.merchant)) %></span>
+        <span id='3' class='top-links'><%= link_to("My Invoices", merchant_invoices_path(@facade.merchant)) %></span>
     </div>
 </span>
 

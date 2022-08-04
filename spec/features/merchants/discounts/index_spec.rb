@@ -22,7 +22,7 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     discount_2a = merchant_2.discounts.create!(discount: 0.15, threshold: 10)
     discount_2b = merchant_2.discounts.create!(discount: 0.30, threshold: 20)
 
-    visit merchant_discounts_path(merchant_1) 
+    visit merchant_discounts_path(merchant_1)
 
     within('#discount-0') do 
       expect(page).to have_content('Discount 1')
