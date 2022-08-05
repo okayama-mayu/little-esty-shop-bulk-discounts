@@ -1,0 +1,14 @@
+<div id="header">
+    <%= render "shared/merchant_facade_header" %>
+</div>
+
+<h4>Merchant Discounts</h4>
+<% @facade.discounts_display.each_with_index do |discount, index| %>
+  <div id="discount-<%=index %>">
+      <h5><%= link_to "Discount #{index + 1}", "/discounts/#{@facade.discounts[index].id}" %></h5>
+      <p><%= discount %></p>
+  </div>
+<% end %>
+
+
+

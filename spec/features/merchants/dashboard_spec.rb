@@ -591,6 +591,16 @@ RSpec.describe 'Merchant Dashboard' do
     # Then I see a link to view all my discounts
     # When I click this link
     # Then I am taken to my bulk discounts index page
+    it 'has a link to the merchant discounts index' do 
+        Faker::UniqueGenerator.clear 
+        merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+        visit "/merchants/#{merchant_1.id}/dashboard" 
+        click_link 'See All Discounts Associated with Merchant'
+
+        expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
+    end
+
     # Where I see all of my bulk discounts including their
     # percentage discount and quantity thresholds
     # And each bulk discount listed includes a link to its show page

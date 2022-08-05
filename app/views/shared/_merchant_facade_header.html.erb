@@ -1,0 +1,20 @@
+<span>
+    <h3><%= @facade.merchant.name %></h3>
+    <div class='nav-links'>
+        <span id='1' class='top-links'> <%= link_to("Dashboard", "/merchants/#{@facade.merchant.id}/dashboard") %></span>
+        <span id='2' class='top-links'> <%= link_to("My Items", merchant_items_path(@facade.merchant)) %></span>
+        <span id='3' class='top-links'><%= link_to("My Invoices", merchant_invoices_path(@facade.merchant)) %></span>
+    </div>
+</span>
+
+<script>
+    var pathArray = window.location.pathname.split('/');
+    console.log(pathArray)
+    if (pathArray[pathArray.length-1] == 'items') {
+        document.getElementById('2').classList.add("active")
+    } else if (pathArray[pathArray.length-1] == 'invoices') {
+       document.getElementById('3').classList.add("active")
+    } else {
+        document.getElementById('1').classList.add("active")
+    }
+</script>
