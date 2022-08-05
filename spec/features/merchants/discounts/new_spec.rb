@@ -21,17 +21,35 @@ RSpec.describe 'New Merchant Discount page' do
     discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
 
     visit new_merchant_discount_path(merchant_1)
-    save_and_open_page 
 
-    fill_in 'Discount Rate', with: 0.35 
+    fill_in 'Discount Rate', with: 35 
     fill_in 'Threshold', with: 20 
     click_on 'Create Discount' 
+    save_and_open_page
 
     expect(current_path).to eq merchant_discounts_path(merchant_1)
     
+    expect(page).to have_content "Merchant Discount was successfully added."
+
     within('#discount-2') do 
       expect(page).to have_content('Discount 3')
-      expect(page).to have_content('Discount Amount: 35 percent, Threshold: 20 items')
+      expect(page).to have_content('Discount Amount: 35.0 percent, Threshold: 20 items')
     end
+  end
+
+  xit 'returns to the form with an alert if the form is not correctly filled in' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    visit new_merchant_discount_path(merchant_1)
+
+    fill_in 'Discount Rate', with: abc 
+    fill_in 'Threshold', with: twenty
+    click_on 'Create Discount' 
+    
+    expect(page).to have_content "Error: Please fill in all fields with numbers."
   end
 end

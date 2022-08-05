@@ -5,13 +5,14 @@
 
 <h3> Create New Discount for Merchant </h3>
 <%= form_with url: merchant_discounts_path(@facade.merchant), method: :post, local: true do |f| %>
-    <%= f.label :discount_rate, 'Discount Rate (in Decimals)' %>
-    <%= f.text_field :discount_rate %>%
+    <%= f.label :discount, 'Discount Rate' %>
+    <%= f.text_field :discount %>%
+    <br>
     <br>
 
-    <%= f.label :threshod, 'Item Count Threshold' %>
-    <%= f.text_field :threshod %>
+    <%= f.label :threshold, 'Item Count Threshold' %>
+    <%= f.text_field :threshold %>
     <br>
-
+    <br>
     <%= f.submit 'Create Discount' %>
 <% end %>
