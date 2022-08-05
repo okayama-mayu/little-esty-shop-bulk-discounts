@@ -61,7 +61,6 @@ RSpec.describe 'Merchant Discount Edit Page', type: :feature do
     fill_in 'Number of an Item that must be bought to trigger the discount:', with: ''
     fill_in 'Percentage Discount:', with: 'forty' 
     click_on 'Update Discount Information' 
-    save_and_open_page
 
     expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts/#{discount_1a.id}/edit"
     expect(page).to have_content "Error: Discount was not updated. Please fill out the form using numbers."
