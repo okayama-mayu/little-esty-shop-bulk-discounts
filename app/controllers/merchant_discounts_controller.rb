@@ -25,6 +25,10 @@ class MerchantDiscountsController < ApplicationController
     redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount has been successfully deleted.'
   end
 
+  def edit 
+    @facade = MerchantDiscountsFacade.new(params)
+  end
+
   private 
   def merchant_discount_params 
     params.permit(:discount, :threshold)
