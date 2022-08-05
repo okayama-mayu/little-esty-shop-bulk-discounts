@@ -25,6 +25,17 @@ class MerchantDiscountsController < ApplicationController
     redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount has been successfully deleted.'
   end
 
+  def edit 
+    @facade = MerchantDiscountsFacade.new(params)
+  end
+
+  def update 
+    facade = MerchantDiscountsFacade.new(params)
+    
+    update_router(facade) 
+  end
+
+
   private 
   def merchant_discount_params 
     params.permit(:discount, :threshold)
@@ -36,5 +47,13 @@ class MerchantDiscountsController < ApplicationController
     else 
       redirect_to new_merchant_discount_path(params[:merchant_id]), alert: "Error: Please fill in all fields with numbers."
     end
+  end
+
+  def update_router(facade)
+    if facade.discount.update(merchant_discount_params)
+      redirect_to merchant_discount_path(facade.merchant, facade.discount), notice: "Discount has been successfully updated."
+    else
+      redirect_to edit_merchant_discount_path(facade.merchant, facade.discount), alert: "Error: Discount was not updated. Please fill out the form using numbers."
+    end 
   end
 end
