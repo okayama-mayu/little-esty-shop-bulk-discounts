@@ -16,5 +16,7 @@ Rails.application.routes.draw do
 
   resources :admin, only: [:index]
 
+  resources :discounts, only: [:show]
+
   get "/merchants/:id/dashboard", to: "merchants#show"
 end

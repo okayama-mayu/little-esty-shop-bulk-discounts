@@ -7,9 +7,15 @@ class Merchant < ApplicationRecord
   has_many :discounts, dependent: :destroy
   has_many :invoice_items, through: :items 
   has_many :invoices, through: :invoice_items
+  has_many :customers, -> { distinct }, through: :invoices
   has_many :transactions, through: :invoices
-  has_many :customers, through: :invoices
+  # when it grabs customers, it's joining on both invoices and transactions 
+  # could do left join if doing SQL? 
 
+  # scope :distinct_customers, -> {select("distinct id").select("id")}
+  # setting a method so you can have distinct customers with distinct ids 
+  # creates subsets of data 
+  # same thing as defining a method that pulls distinct customers 
 
   def top_5
     # test = customers
@@ -18,14 +24,13 @@ class Merchant < ApplicationRecord
     # .select('customers.*, count(transactions.result) as transaction_total')
     # .group(:id)
     # binding.pry 
-    test = customers
+    customers
     .joins(invoices: :transactions)
     .where(transactions: { result: :success })
     .select('customers.*, count(transactions.result) as success_count')
     .group(:id)
     .order('success_count desc')
     .limit(5)
-    # binding.pry 
   end
 
   def unshipped_items
