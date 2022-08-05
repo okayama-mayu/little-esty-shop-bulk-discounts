@@ -72,4 +72,30 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
 
     expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts/new"
   end
+
+  # US3
+  # Merchant Bulk Discount Delete
+  # As a merchant
+  # When I visit my bulk discounts index
+  # Then next to each bulk discount I see a link to delete it
+  # When I click this link
+  # Then I am redirected back to the bulk discounts index page
+  # And I no longer see the discount listed
+  it 'has a link to delete each Discount' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    visit merchant_discounts_path(merchant_1)
+    
+    within('#discount-0') do 
+      click_link 'Delete Discount' 
+    end
+
+    expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
+    expect(page).to have_content 'Discount has been successfully deleted.' 
+    expect(page).to_not have_content 'Discount Amount: 20.0 percent, Threshold: 10 items'
+  end
 end

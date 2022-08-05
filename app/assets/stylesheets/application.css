@@ -60,6 +60,11 @@
     color: green
 }
 
+.nowrap {
+    white-space: nowrap;
+    display: inline-block;
+}
+
 #incomplete-invoices {
     margin: 0 25px 0 25px;
     width: 40%;
@@ -87,6 +92,14 @@ a {
 }
 
 h3 {
+    display: inline-block;
+}
+
+h4 {
+    display: inline-block;
+}
+
+p {
     display: inline-block;
 }
 

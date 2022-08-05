@@ -8,14 +8,18 @@
 <% end %>
 <br>
 
-<%= link_to 'Create New Discount', new_merchant_discount_path(@facade.merchant) %>
+<%= link_to 'Create New Discount', new_merchant_discount_path(@facade.merchant) %><br>
 
-<h4>Merchant Discounts</h4>
+<h3>Merchant Discounts</h3>
 <% @facade.discounts_display.each_with_index do |discount, index| %>
-  <div id="discount-<%=index %>">
-      <h5><%= link_to "Discount #{index + 1}", merchant_discount_path(@facade.merchant, @facade.discounts[index]) %></h5>
-      <p><%= discount %></p>
-  </div>
+    <div id="discount-<%=index %>">
+        <div class="nowrap">
+            <h4><%= link_to "Discount #{index + 1}:", merchant_discount_path(@facade.merchant, @facade.discounts[index]) %></h4>
+            <p><%= discount %></p> 
+        </div>
+        <br>
+        <%= link_to 'Delete Discount', merchant_discount_path(@facade.merchant, @facade.discounts[index]), method: :delete %>
+    </div>
 <% end %>
 
 
