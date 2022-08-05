@@ -31,9 +31,8 @@ class MerchantDiscountsController < ApplicationController
 
   def update 
     facade = MerchantDiscountsFacade.new(params)
-    facade.discount.update(merchant_discount_params)
-
-    redirect_to merchant_discount_path(facade.merchant, facade.discount), notice: "Discount has been successfully updated."
+    
+    update_router(facade) 
   end
 
 
@@ -48,5 +47,13 @@ class MerchantDiscountsController < ApplicationController
     else 
       redirect_to new_merchant_discount_path(params[:merchant_id]), alert: "Error: Please fill in all fields with numbers."
     end
+  end
+
+  def update_router(facade)
+    if facade.discount.update(merchant_discount_params)
+      redirect_to merchant_discount_path(facade.merchant, facade.discount), notice: "Discount has been successfully updated."
+    else
+      redirect_to edit_merchant_discount_path(facade.merchant, facade.discount), alert: "Error: Discount was not updated. Please fill out the form using numbers."
+    end 
   end
 end

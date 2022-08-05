@@ -48,4 +48,22 @@ RSpec.describe 'Merchant Discount Edit Page', type: :feature do
     expect(page).to have_content 'Quantity Threshold: 20'
     expect(page).to have_content 'Percentage Discount: 30.5%'
   end
+
+  it 'is redirected to the Edit page if the form is not filled out correctly' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    visit edit_merchant_discount_path(merchant_1, discount_1a)
+
+    fill_in 'Number of an Item that must be bought to trigger the discount:', with: ''
+    fill_in 'Percentage Discount:', with: 'forty' 
+    click_on 'Update Discount Information' 
+    save_and_open_page
+
+    expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts/#{discount_1a.id}/edit"
+    expect(page).to have_content "Error: Discount was not updated. Please fill out the form using numbers."
+  end
 end
