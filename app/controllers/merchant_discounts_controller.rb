@@ -4,7 +4,7 @@ class MerchantDiscountsController < ApplicationController
   end
 
   def show 
-
+    @facade = MerchantDiscountsFacade.new(params)
   end
   
   def new 
