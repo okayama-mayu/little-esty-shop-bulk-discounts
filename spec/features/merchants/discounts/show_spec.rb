@@ -41,10 +41,4 @@ RSpec.describe 'Merchant Discount Show page', type: :feature do
 
     expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts/#{discount_1b.id}/edit"
   end
-
-
-  # And I see that the discounts current attributes are pre-poluated in the form
-  # When I change any/all of the information and click submit
-  # Then I am redirected to the bulk discount's show page
-  # And I see that the discount's attributes have been updated
 end
