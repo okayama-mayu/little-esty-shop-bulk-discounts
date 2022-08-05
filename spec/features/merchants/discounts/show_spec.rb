@@ -14,6 +14,7 @@ RSpec.describe 'Merchant Discount Show page', type: :feature do
     discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
 
     visit merchant_discount_path(merchant_1, discount_1a)
+    save_and_open_page
 
     expect(page).to have_content('Quantity Threshold: 10')
     expect(page).to have_content('Percentage Discount: 20.0%')
