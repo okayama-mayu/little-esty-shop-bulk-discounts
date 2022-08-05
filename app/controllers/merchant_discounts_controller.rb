@@ -29,6 +29,14 @@ class MerchantDiscountsController < ApplicationController
     @facade = MerchantDiscountsFacade.new(params)
   end
 
+  def update 
+    facade = MerchantDiscountsFacade.new(params)
+    facade.discount.update(merchant_discount_params)
+
+    redirect_to merchant_discount_path(facade.merchant, facade.discount), notice: "Discount has been successfully updated."
+  end
+
+
   private 
   def merchant_discount_params 
     params.permit(:discount, :threshold)

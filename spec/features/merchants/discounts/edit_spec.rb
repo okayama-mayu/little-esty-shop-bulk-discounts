@@ -43,9 +43,9 @@ RSpec.describe 'Merchant Discount Edit Page', type: :feature do
     fill_in 'Percentage Discount:', with: '30.5' 
     click_on 'Update Discount Information' 
 
-    expect(current_path).to eq "merchant/discount/#{discount_1b.id}"
+    expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts/#{discount_1b.id}"
     expect(page).to have_content "Discount has been successfully updated."
-    expect(page).to have_content 'Quantity Threshold: 15'
+    expect(page).to have_content 'Quantity Threshold: 20'
     expect(page).to have_content 'Percentage Discount: 30.5%'
   end
 end
