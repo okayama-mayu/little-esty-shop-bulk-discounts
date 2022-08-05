@@ -105,17 +105,23 @@ p {
 
 table {
     width: 100%;
-
 }
+
 th {
     color: white;
     background: rgb(158, 158, 158);
 }
+
 tr {
     background: rgb(230, 230, 230);
 }
+
 table, th, td {
     border: 1px solid;
     border-collapse: collapse;
     text-align: center;
-  }
+}
+
+br { 
+    line-height: 0;
+}
