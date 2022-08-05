@@ -1,0 +1,23 @@
+<div id="header">
+    <%= render "shared/merchant_facade_header" %>
+</div>
+<br><br>
+
+<% flash.each do |type, msg| %>
+    <div class='flash_red'><%= msg %></div>
+<% end %>
+<br>
+
+<h3> Create New Discount for Merchant </h3>
+<%= form_with url: merchant_discounts_path(@facade.merchant), method: :post, local: true do |f| %>
+    <%= f.label :discount, 'Discount Rate' %>
+    <%= f.text_field :discount %>%
+    <br>
+    <br>
+
+    <%= f.label :threshold, 'Item Count Threshold' %>
+    <%= f.text_field :threshold %>
+    <br>
+    <br>
+    <%= f.submit 'Create Discount' %>
+<% end %>

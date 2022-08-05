@@ -585,6 +585,7 @@ RSpec.describe 'Merchant Dashboard' do
         end
     end
 
+    # US 1 
     # Merchant Bulk Discounts Index
     # As a merchant
     # When I visit my merchant dashboard
@@ -600,8 +601,4 @@ RSpec.describe 'Merchant Dashboard' do
 
         expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
     end
-
-    # Where I see all of my bulk discounts including their
-    # percentage discount and quantity thresholds
-    # And each bulk discount listed includes a link to its show page
 end

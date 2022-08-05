@@ -1,11 +1,19 @@
 <div id="header">
     <%= render "shared/merchant_facade_header" %>
 </div>
+<br><br>
+
+<% flash.each do |type, msg| %>
+    <div class='flash_green'><%= msg %></div>
+<% end %>
+<br>
+
+<%= link_to 'Create New Discount', new_merchant_discount_path(@facade.merchant) %>
 
 <h4>Merchant Discounts</h4>
 <% @facade.discounts_display.each_with_index do |discount, index| %>
   <div id="discount-<%=index %>">
-      <h5><%= link_to "Discount #{index + 1}", "/discounts/#{@facade.discounts[index].id}" %></h5>
+      <h5><%= link_to "Discount #{index + 1}", merchant_discount_path(@facade.merchant, @facade.discounts[index]) %></h5>
       <p><%= discount %></p>
   </div>
 <% end %>
