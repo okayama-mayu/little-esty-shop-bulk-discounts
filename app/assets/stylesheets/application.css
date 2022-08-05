@@ -60,6 +60,11 @@
     color: green
 }
 
+.nowrap {
+    white-space: nowrap;
+    display: inline-block;
+}
+
 #incomplete-invoices {
     margin: 0 25px 0 25px;
     width: 40%;
@@ -90,19 +95,33 @@ h3 {
     display: inline-block;
 }
 
+h4 {
+    display: inline-block;
+}
+
+p {
+    display: inline-block;
+}
+
 table {
     width: 100%;
-
 }
+
 th {
     color: white;
     background: rgb(158, 158, 158);
 }
+
 tr {
     background: rgb(230, 230, 230);
 }
+
 table, th, td {
     border: 1px solid;
     border-collapse: collapse;
     text-align: center;
-  }
+}
+
+br { 
+    line-height: 0;
+}

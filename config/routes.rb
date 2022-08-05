@@ -11,7 +11,7 @@ Rails.application.routes.draw do
   resources :merchants, only: [:index]  do
     resources :items, only: [:index, :show, :new, :create, :edit, :update], :controller => 'merchant_items'
     resources :invoices, only: [:index, :show, :update], :controller => 'merchant_invoices'
-    resources :discounts, only: [:index, :show, :new, :create], :controller => 'merchant_discounts'
+    resources :discounts, only: [:index, :show, :new, :create, :destroy], :controller => 'merchant_discounts'
   end
 
   resources :admin, only: [:index]
