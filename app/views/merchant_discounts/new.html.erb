@@ -1,6 +1,11 @@
 <div id="header">
     <%= render "shared/merchant_facade_header" %>
 </div>
+<br><br>
+
+<% flash.each do |type, msg| %>
+    <div class='flash_red'><%= msg %></div>
+<% end %>
 <br>
 
 <h3> Create New Discount for Merchant </h3>

@@ -27,8 +27,7 @@ class MerchantDiscountsController < ApplicationController
     if discount.save 
       redirect_to merchant_discounts_path(params[:merchant_id]), notice: "Merchant Discount was successfully added."
     else 
-      flash[:alert] = "Error: Please fill in all fields with numbers."
-      render :new
+      redirect_to new_merchant_discount_path(params[:merchant_id]), alert: "Error: Please fill in all fields with numbers."
     end
   end
 end
