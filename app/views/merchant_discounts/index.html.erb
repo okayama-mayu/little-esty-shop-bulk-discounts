@@ -5,7 +5,7 @@
 <h4>Merchant Discounts</h4>
 <% @facade.discounts_display.each_with_index do |discount, index| %>
   <div id="discount-<%=index %>">
-      <h5><%= link_to "Discount #{index + 1}", "/discounts/#{@facade.discounts[index].id}" %></h5>
+      <h5><%= link_to "Discount #{index + 1}", discount_path(@facade.discounts[index]) %></h5>
       <p><%= discount %></p>
   </div>
 <% end %>
