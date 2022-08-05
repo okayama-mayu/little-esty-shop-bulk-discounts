@@ -4,7 +4,7 @@ class MerchantDiscountsController < ApplicationController
   end
 
   def show 
-    binding.pry 
+    @facade = MerchantDiscountsFacade.new(params)
   end
   
   def new 
