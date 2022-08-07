@@ -76,5 +76,28 @@ RSpec.describe Invoice, type: :model do
         expect(invoice_1.total_revenue).to eq(55000)
       end
     end
+
+    describe '#total_discounts' do 
+      it 'shows total discounted revenue generated from all items on invoice' do
+        merchant = Merchant.create!(name: 'amazon')
+        
+        customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+        item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
+        item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
+
+        invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+        InvoiceItem.create!(quantity: 2, unit_price: 50, status: 'shipped', item: item_1, invoice: invoice_1)
+        InvoiceItem.create!(quantity: 15, unit_price: 100, status: 'packaged', item: item_2, invoice: invoice_1)
+
+        discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
+        discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
+
+        expected = invoice_1.total_discounts.map { |invoice_item| invoice_item.item_discount }.sum 
+
+        expect(expected).to eq 450.0 
+      end
+    end
   end
 end

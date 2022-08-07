@@ -1,15 +1,15 @@
 <div id="header">
-    <%= render "shared/merchant_header" %>
+    <%= render "shared/merchant_facade_header" %>
 </div>
 
 <div id=invoice-details>
-    <h1> Invoice #<%= @invoice.id %> </h1>
+    <h1> Invoice #<%= @facade.invoice.id %> </h1>
 
-    <p> Status: <%= @invoice.status %> </p>
-    <p> Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
-    <p> Total Revenue: <%= number_to_currency(@merchant.total_revenue(@invoice.id).to_f/100 ) %> </p>
+    <p> Status: <%= @facade.invoice.status %> </p>
+    <p> Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
+    <p> Total Revenue: <%= number_to_currency(@facade.merchant.total_revenue(@facade.invoice.id).to_f/100 ) %> </p>
     <h2> customer: </h2>
-    <p>  <%= @invoice.customer.first_name  %> <%= @invoice.customer.last_name  %> </p>
+    <p>  <%= @facade.invoice.customer.first_name  %> <%= @facade.invoice.customer.last_name  %> </p>
 </div>
 <div id=item-details>
     <h2> Items on this invoice: </h2>
@@ -21,12 +21,12 @@
             <th>Unit Price</th>
             <th>Status</th>
         </tr>
-        <% @merchant.get_invoice_items(@invoice.id).each do |invoice_item| %>
+        <% @facade.merchant.get_invoice_items(@facade.invoice.id).each do |invoice_item| %>
             <tr>
                 <td><%= invoice_item.item.name %></td>
                 <td><%= invoice_item.quantity %></td>
                 <td><%= number_to_currency(invoice_item.unit_price.to_f/100 ) %></td>
-                <td><%= form_with url: "/merchants/#{@merchant.id}/invoices/#{@invoice.id}/?invoice_item_id=#{invoice_item.id}", method: :patch, local: true do |f| %>
+                <td><%= form_with url: "/merchants/#{@facade.merchant.id}/invoices/#{@facade.invoice.id}/?invoice_item_id=#{invoice_item.id}", method: :patch, local: true do |f| %>
                     <%= f.select :status, options_for_select(['pending', 'packaged', 'shipped'], invoice_item.status) %>
                     <%= f.submit "Update Item Status"%>
                     <% end %>
