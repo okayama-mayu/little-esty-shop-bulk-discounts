@@ -45,8 +45,8 @@ RSpec.describe 'Admin Invoices Show Page' do
                                           invoice_id: @invoice_1.id)
 
     # discounts
-    @discount_1a = merchant.discounts.create!(discount: 20, threshold: 2)
-    @discount_1b = merchant.discounts.create!(discount: 10, threshold: 5) # should never get applied 
+    @discount_1a = @merchant_1.discounts.create!(discount: 20, threshold: 2)
+    @discount_1b = @merchant_1.discounts.create!(discount: 10, threshold: 5) # should never get applied 
 
     
     # invoice 2 
