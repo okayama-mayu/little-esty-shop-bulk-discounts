@@ -32,24 +32,31 @@ RSpec.describe 'Admin Invoices Show Page' do
     @invoice_3 = Invoice.create!( status: 'in progress', 
                                   customer_id: @customer_1.id)
 
+    # invoice 1 
     @invoice_item_1 = InvoiceItem.create!(quantity: 1, 
                                           unit_price: 5000, 
                                           status: 'shipped', 
                                           item_id: @item_1.id, 
                                           invoice_id: @invoice_1.id)
-
     @invoice_item_2 = InvoiceItem.create!(quantity: 5, 
                                           unit_price: 10000, 
                                           status: 'shipped', 
                                           item_id: @item_2.id, 
                                           invoice_id: @invoice_1.id)
 
+    # discounts
+    @discount_1a = merchant.discounts.create!(discount: 20, threshold: 2)
+    @discount_1b = merchant.discounts.create!(discount: 10, threshold: 5) # should never get applied 
+
+    
+    # invoice 2 
     @invoice_item_3 = InvoiceItem.create!(quantity: rand(1..10), 
                                           unit_price: 15000, 
                                           status: 'shipped', 
                                           item_id: @item_1.id, 
                                           invoice_id: @invoice_2.id)
-
+    
+    # invoice 3 
     @invoice_item_4 = InvoiceItem.create!(quantity: rand(1..10), 
                                           unit_price: 25000, 
                                           status: 'shipped', 
@@ -146,6 +153,22 @@ RSpec.describe 'Admin Invoices Show Page' do
       click_on("Update Invoice Status")
       expect(current_path).to eq("/admin/invoices/#{@invoice_1.id}")
       expect(page).to have_content("completed")
+    end
+  end
+
+  # US 7
+  # Admin Invoice Show Page: Total Revenue and Discounted Revenue
+  # As an admin
+  # When I visit an admin invoice show page
+  # Then I see the total revenue from this invoice (not including discounts)
+  # And I see the total discounted revenue from this invoice which includes bulk discounts in the calculation
+  it 'shows the total revenue and the total discounted revenue that will be generated for the invoice' do
+    visit "/admin/invoices/#{@invoice_1.id}"
+
+    within '#invoice-details' do
+      expect(page).to have_content('Total Revenue: $550.00')
+      expect(page).to have_content('Total Discounted Revenue: $450.00')
+      expect(page).to_not have_content('Total Discounted Revenue: $500.00') # sad path testing for a discount with a higher threshold that a invoice item meets, but has a lower discount, so should not be applied 
     end
   end
 end
