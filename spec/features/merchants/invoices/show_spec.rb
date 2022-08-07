@@ -140,6 +140,7 @@ RSpec.describe 'Merchant invoice Show page' do
         discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
 
         visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
+        save_and_open_page
 
         within "#invoice-details" do
             expect(page).to have_link('20.0% off Discount with Threshold of 10 Applied')

@@ -19,8 +19,10 @@ class MerchantInvoicesFacade
   end
 
   def discount_stats
+    stats = Hash.new 
     @invoice.all_discounts.map do |discount| 
-      "#{discount.max_disc}% off Discount with Threshold of #{discount.count_threshold} Applied"
+      stats[discount.discount_id.to_s] = "#{discount.max_disc}% off Discount with Threshold of #{discount.count_threshold} Applied"
     end
+    stats 
   end
 end

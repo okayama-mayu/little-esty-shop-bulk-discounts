@@ -106,6 +106,9 @@ RSpec.describe 'Merchant Invoices Facade', type: :facade do
 
     mif = MerchantInvoicesFacade.new(params)
 
-    expect(mif.discount_stats).to eq(['20.0% off Discount with Threshold of 10 Applied', '30.0% off Discount with Threshold of 15 Applied'])
+    expect(mif.discount_stats).to eq({
+      discount_1a.id.to_s => '20.0% off Discount with Threshold of 10 Applied', 
+      discount_1b.id.to_s => '30.0% off Discount with Threshold of 15 Applied'
+    })
   end
 end
