@@ -14,7 +14,7 @@
     <p> Total Discounted Revenue: <%= number_to_currency(@facade.discounted_rev) %> </p><br>
     
     <% @facade.discount_stats.each do |discount_id, string| %>
-        <%= link_to string, merchant_discount_path(discount_id.to_i) %>
+        <%= link_to string, merchant_discount_path(@facade.merchant, discount_id.to_i) %>
         <br>
     <% end %>
 
