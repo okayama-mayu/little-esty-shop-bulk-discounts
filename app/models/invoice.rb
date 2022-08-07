@@ -30,12 +30,11 @@ class Invoice < ApplicationRecord
     # revenue_generated
   end
 
-  def total_discounts
-    binding.pry 
+  def all_discounts
     test = invoice_items
     .joins(item: [{merchant: :discounts}])
     .where('quantity >= discounts.threshold')
-    .select('max(discounts.discount) as max_disc, max(discounts.discount) / 100  * invoice_items.quantity * invoice_items.unit_price as item_discount')
+    .select('invoice_items.*, max(discounts.discount) as max_disc, max(discounts.discount) / 100  * invoice_items.quantity * invoice_items.unit_price as item_discount')
     .group(:id)
   end
 end

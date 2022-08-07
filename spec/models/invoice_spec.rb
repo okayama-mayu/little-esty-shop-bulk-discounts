@@ -77,8 +77,8 @@ RSpec.describe Invoice, type: :model do
       end
     end
 
-    describe '#total_discounts' do 
-      it 'shows total discount amount generated from all items on invoice' do
+    describe '#all_discounts' do 
+      it 'shows all discounts generated from all items on invoice' do
         merchant = Merchant.create!(name: 'amazon')
         
         customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
@@ -94,9 +94,9 @@ RSpec.describe Invoice, type: :model do
         discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
         discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
 
-        expected = invoice_1.total_discounts.map { |invoice_item| invoice_item.item_discount }.sum 
+        expected = invoice_1.all_discounts.map { |invoice_item| invoice_item.item_discount }.sum 
 
-        expect(expected).to eq 450.0 
+        expect(expected).to eq 675.0 
       end
     end
   end
