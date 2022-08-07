@@ -14,6 +14,8 @@ class AdminInvoicesFacade
   end
 
   def total_discounts
-    binding.pry 
+    @invoice.all_discounts.sum do |invoice_item|
+      invoice_item.item_discount
+    end
   end
 end
