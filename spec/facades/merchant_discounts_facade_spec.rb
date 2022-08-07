@@ -77,4 +77,23 @@ RSpec.describe 'MerchantDiscountsFacade', type: :facade do
 
     expect(mdf.discount).to eq discount_1a
   end
+
+  it 'returns the next 3 US holidays' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    params = {
+      :controller =>"merchant_discounts", 
+      :action =>"show", 
+      :merchant_id => merchant_1.id.to_s, 
+      :id => discount_1a.id.to_s 
+    } 
+
+    mdf = MerchantDiscountsFacade.new(params)
+
+    expect(mdf.next_3_holidays).to eq(["Labor Day: 2022-09-05", "Veterans Day: 2022-11-11", "Thanksgiving Day: 2022-11-24"])
+  end
 end
