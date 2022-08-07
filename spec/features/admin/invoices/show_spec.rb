@@ -164,7 +164,6 @@ RSpec.describe 'Admin Invoices Show Page' do
   # And I see the total discounted revenue from this invoice which includes bulk discounts in the calculation
   it 'shows the total revenue and the total discounted revenue that will be generated for the invoice' do
     visit "/admin/invoices/#{@invoice_1.id}"
-    save_and_open_page
 
     within '#invoice-details' do
       expect(page).to have_content('Total Revenue: $550.00')
