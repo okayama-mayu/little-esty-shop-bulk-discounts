@@ -49,31 +49,54 @@ RSpec.describe Invoice, type: :model do
           last_name: Faker::Name.unique.last_name)
 
         invoice_1 = Invoice.create!( status: 'completed', 
-                                      customer_id: customer_1.id)
+        customer_id: customer_1.id)
 
         item_1 = Item.create!(name: Faker::Commerce.unique.product_name, 
-                              description: 'Our first test item', 
-                              unit_price: rand(100..10000), 
-                              merchant_id: merchant_1.id)
+        description: 'Our first test item', 
+        unit_price: rand(100..10000), 
+        merchant_id: merchant_1.id)
 
         item_2 = Item.create!(name: Faker::Commerce.unique.product_name, 
-                              description: 'Our second test item', 
-                              unit_price: rand(100..10000), 
-                              merchant_id: merchant_1.id)
+        description: 'Our second test item', 
+        unit_price: rand(100..10000), 
+        merchant_id: merchant_1.id)
 
         invoice_item_1 = InvoiceItem.create!(quantity: 1, 
-                                              unit_price: 5000, 
-                                              status: 'shipped', 
-                                              item_id: item_1.id, 
-                                              invoice_id: invoice_1.id)
+        unit_price: 5000, 
+        status: 'shipped', 
+        item_id: item_1.id, 
+        invoice_id: invoice_1.id)
 
-        invoice_item_2 = InvoiceItem.create!(quantity: 5, 
-                                              unit_price: 10000, 
-                                              status: 'shipped', 
-                                              item_id: item_2.id, 
-                                              invoice_id: invoice_1.id)
+        invoice_item_2 = InvoiceItem.create!(quantity: 5,
+        unit_price: 10000, 
+        status: 'shipped', 
+        item_id: item_2.id, 
+        invoice_id: invoice_1.id)
 
-        expect(invoice_1.total_revenue).to eq(55000)
+        expect(invoice_1.total_revenue).to eq(550)
+      end
+    end
+
+    describe '#all_discounts' do 
+      it 'shows all discounts generated from all items on invoice' do
+        merchant = Merchant.create!(name: 'amazon')
+        
+        customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+        item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
+        item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
+
+        invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+        InvoiceItem.create!(quantity: 15, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+        InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
+
+        discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
+        discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
+
+        expected = invoice_1.all_discounts.map { |invoice_item| invoice_item.item_discount }.sum 
+
+        expect(expected).to eq 675.0 
       end
     end
   end

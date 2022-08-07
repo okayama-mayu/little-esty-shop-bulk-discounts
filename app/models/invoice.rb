@@ -18,10 +18,23 @@ class Invoice < ApplicationRecord
   end
 
   def total_revenue
-    revenue_generated = 0
-    invoice_items.each do |invoice_item|
-      revenue_generated += (invoice_item.quantity * invoice_item.unit_price)
-    end
-    revenue_generated
+    invoice_items
+    .joins(item: :merchant)
+    .select('invoice_items.invoice_id as inv_id, sum(invoice_items.quantity * invoice_items.unit_price/100.0) as rev')
+    .group('inv_id')[0]
+    .rev 
+    # revenue_generated = 0
+    # invoice_items.each do |invoice_item|
+    #   revenue_generated += (invoice_item.quantity * invoice_item.unit_price)
+    # end
+    # revenue_generated
+  end
+
+  def all_discounts
+    test = invoice_items
+    .joins(item: [{merchant: :discounts}])
+    .where('quantity >= discounts.threshold')
+    .select('invoice_items.*, max(discounts.discount) as max_disc, max(discounts.discount) / 100  * invoice_items.quantity * invoice_items.unit_price/100.0 as item_discount')
+    .group(:id)
   end
 end
