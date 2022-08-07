@@ -18,4 +18,8 @@ class AdminInvoicesFacade
       invoice_item.item_discount
     end
   end
+
+  def discounted_revenue
+    total_revenue - total_discounts
+  end
 end

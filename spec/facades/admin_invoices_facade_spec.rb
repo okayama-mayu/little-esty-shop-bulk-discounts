@@ -49,4 +49,8 @@ RSpec.describe 'Admin Invoices Facade', type: :facade do
   it 'returns the Total Discount' do 
     expect(@aif.total_discounts).to eq 100.0
   end
+
+  it 'returns the Total Discounted Revenue' do 
+    expect(@aif.discounted_revenue).to eq 450.0 
+  end
 end
