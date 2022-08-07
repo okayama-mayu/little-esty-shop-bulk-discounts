@@ -41,4 +41,5 @@ RSpec.describe 'Admin Invoices Facade', type: :facade do
   it 'returns the customers full name' do 
     expect(@aif.customer_name).to eq "#{@customer_1.first_name} #{@customer_1.last_name}"
   end
+
 end
