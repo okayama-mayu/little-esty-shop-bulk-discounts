@@ -42,4 +42,7 @@ RSpec.describe 'Admin Invoices Facade', type: :facade do
     expect(@aif.customer_name).to eq "#{@customer_1.first_name} #{@customer_1.last_name}"
   end
 
+  it 'returns the Total Revenue' do
+    expect(@aif.total_revenue).to eq 550.0
+  end
 end

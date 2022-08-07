@@ -8,4 +8,8 @@ class AdminInvoicesFacade
   def customer_name
     "#{@invoice.customer.first_name} #{@invoice.customer.last_name}"
   end
+
+  def total_revenue
+    @invoice.total_revenue.to_f
+  end
 end

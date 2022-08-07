@@ -18,7 +18,7 @@
   
 
   <p>Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
-  <p>Total Revenue: <%= number_to_currency(@facade.invoice.total_revenue.to_f)%></p>
+  <p>Total Revenue: <%= number_to_currency(@facade.total_revenue)%></p>
   <h2>Customer: </h2>
   <p><%= @facade.customer_name%></p>
 </div>
