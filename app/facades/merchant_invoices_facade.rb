@@ -17,4 +17,10 @@ class MerchantInvoicesFacade
   def discounted_rev
     @invoice.total_revenue - total_discounts
   end
+
+  def discount_stats
+    @invoice.all_discounts.map do |discount| 
+      "#{discount.max_disc}% off Discount with Threshold of #{discount.count_threshold} Applied"
+    end
+  end
 end
