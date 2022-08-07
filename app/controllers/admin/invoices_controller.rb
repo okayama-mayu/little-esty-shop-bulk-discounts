@@ -4,7 +4,6 @@ class Admin::InvoicesController < ApplicationController
     end
 
     def show
-      binding.pry 
       @facade = AdminInvoicesFacade.new(params)
       # @invoice = Invoice.find(params[:id])
     end

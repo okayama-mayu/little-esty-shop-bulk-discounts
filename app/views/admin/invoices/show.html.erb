@@ -2,25 +2,25 @@
     <%= render "shared/admin_header" %>
 </div>
 
-<div class='section-title' style="font-size:130%">Invoice #<%= @invoice.id %></div>
+<div class='section-title' style="font-size:130%">Invoice #<%= @facade.invoice.id %></div>
 
 <div id='invoice-details'>
   <br>
   <div >
     <p style= 'float:left; padding-right:10px'>Status: </p>
     <br>
-    <%= form_with url: admin_invoice_path(@invoice), method: :patch, local: true do |f| %>
-      <%= f.select :status, options_for_select(['in progress', 'completed', 'cancelled'], @invoice.status) %>
+    <%= form_with url: admin_invoice_path(@facade.invoice), method: :patch, local: true do |f| %>
+      <%= f.select :status, options_for_select(['in progress', 'completed', 'cancelled'], @facade.invoice.status) %>
       <%= f.submit "Update Invoice Status"%>
     <% end %>
     <br>
   </div>
   
 
-  <p>Created on: <%= @invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
-  <p>Total Revenue: <%= number_to_currency(@invoice.total_revenue.to_f)%></p>
+  <p>Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
+  <p>Total Revenue: <%= number_to_currency(@facade.invoice.total_revenue.to_f)%></p>
   <h2>Customer: </h2>
-  <p><%= @invoice.customer.first_name.titlecase  %> <%= @invoice.customer.last_name.titlecase  %> </p>
+  <p><%= @facade.invoice.customer.first_name.titlecase  %> <%= @facade.invoice.customer.last_name.titlecase  %> </p>
 </div>
 
 <div id="invoice-item-details">
@@ -33,7 +33,7 @@
             <th>Price</th>
             <th>Status</th>
         </tr>
-        <% @invoice.invoice_items.each do |invoice_item| %>
+        <% @facade.invoice.invoice_items.each do |invoice_item| %>
             <tr id="invoice-item-<%= invoice_item.id %>">
                 <td><%= invoice_item.item.name.titlecase %></td>
                 <td><%= invoice_item.quantity %></td>
