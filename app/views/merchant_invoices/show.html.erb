@@ -5,9 +5,14 @@
 <div id=invoice-details>
     <h1> Invoice #<%= @facade.invoice.id %> </h1>
 
-    <p> Status: <%= @facade.invoice.status %> </p>
-    <p> Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
-    <p> Total Revenue: <%= number_to_currency(@facade.invoice.total_revenue) %> </p>
+    <p> Status: <%= @facade.invoice.status %> </p><br>
+
+    <p> Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p><br>
+
+    <p> Total Revenue: <%= number_to_currency(@facade.invoice.total_revenue) %> </p><br>
+
+    <p> Total Discounted Revenue: <%= number_to_currency(@facade.discounted_rev) %> </p><br>
+    
     <h2> customer: </h2>
     <p>  <%= @facade.invoice.customer.first_name  %> <%= @facade.invoice.customer.last_name  %> </p>
 </div>

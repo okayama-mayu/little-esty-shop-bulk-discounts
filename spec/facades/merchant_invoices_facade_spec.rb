@@ -41,8 +41,8 @@ RSpec.describe 'Merchant Invoices Facade', type: :facade do
 
     invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
 
-    InvoiceItem.create!(quantity: 15, unit_price: 50, status: 'shipped', item: item_1, invoice: invoice_1)
-    InvoiceItem.create!(quantity: 15, unit_price: 100, status: 'packaged', item: item_2, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
 
     discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
     discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
@@ -67,8 +67,8 @@ RSpec.describe 'Merchant Invoices Facade', type: :facade do
 
     invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
 
-    InvoiceItem.create!(quantity: 15, unit_price: 50, status: 'shipped', item: item_1, invoice: invoice_1)
-    InvoiceItem.create!(quantity: 15, unit_price: 100, status: 'packaged', item: item_2, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
 
     discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
     discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)

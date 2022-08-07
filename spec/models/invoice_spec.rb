@@ -49,31 +49,31 @@ RSpec.describe Invoice, type: :model do
           last_name: Faker::Name.unique.last_name)
 
         invoice_1 = Invoice.create!( status: 'completed', 
-                                      customer_id: customer_1.id)
+        customer_id: customer_1.id)
 
         item_1 = Item.create!(name: Faker::Commerce.unique.product_name, 
-                              description: 'Our first test item', 
-                              unit_price: rand(100..10000), 
-                              merchant_id: merchant_1.id)
+        description: 'Our first test item', 
+        unit_price: rand(100..10000), 
+        merchant_id: merchant_1.id)
 
         item_2 = Item.create!(name: Faker::Commerce.unique.product_name, 
-                              description: 'Our second test item', 
-                              unit_price: rand(100..10000), 
-                              merchant_id: merchant_1.id)
+        description: 'Our second test item', 
+        unit_price: rand(100..10000), 
+        merchant_id: merchant_1.id)
 
         invoice_item_1 = InvoiceItem.create!(quantity: 1, 
-                                              unit_price: 5000, 
-                                              status: 'shipped', 
-                                              item_id: item_1.id, 
-                                              invoice_id: invoice_1.id)
+        unit_price: 5000, 
+        status: 'shipped', 
+        item_id: item_1.id, 
+        invoice_id: invoice_1.id)
 
-        invoice_item_2 = InvoiceItem.create!(quantity: 5, 
-                                              unit_price: 10000, 
-                                              status: 'shipped', 
-                                              item_id: item_2.id, 
-                                              invoice_id: invoice_1.id)
+        invoice_item_2 = InvoiceItem.create!(quantity: 5,
+        unit_price: 10000, 
+        status: 'shipped', 
+        item_id: item_2.id, 
+        invoice_id: invoice_1.id)
 
-        expect(invoice_1.total_revenue).to eq(55000)
+        expect(invoice_1.total_revenue).to eq(550)
       end
     end
 
@@ -88,8 +88,8 @@ RSpec.describe Invoice, type: :model do
 
         invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
 
-        InvoiceItem.create!(quantity: 15, unit_price: 50, status: 'shipped', item: item_1, invoice: invoice_1)
-        InvoiceItem.create!(quantity: 15, unit_price: 100, status: 'packaged', item: item_2, invoice: invoice_1)
+        InvoiceItem.create!(quantity: 15, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+        InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
 
         discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
         discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
