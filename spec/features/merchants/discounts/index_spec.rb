@@ -98,4 +98,29 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     expect(page).to have_content 'Discount has been successfully deleted.' 
     expect(page).to_not have_content 'Discount Amount: 20.0 percent, Threshold: 10 items'
   end
+
+  # US 9
+  # As a merchant
+  # When I visit the discounts index page
+  # I see a section with a header of "Upcoming Holidays"
+  # In this section the name and date of the next 3 upcoming US holidays are listed.
+  # Use the Next Public Holidays Endpoint in the [Nager.Date API](https://date.nager.at/swagger/index.html)
+  # https://date.nager.at/api/v3/NextPublicHolidays/US
+  it 'has a Holidays section with the next 3 upcoming US holidays' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    visit merchant_discounts_path(merchant_1)
+    save_and_open_page
+    
+    within('#holidays') do 
+      expect(page).to have_content "Upcoming Holidays"
+      expect(page).to have_content "Labor Day: 2022-09-05" 
+      expect(page).to have_content "Veterans Day: 2022-11-11" 
+      expect(page).to have_content "Thanksgiving Day: 2022-11-24" 
+    end
+  end 
 end
