@@ -141,7 +141,7 @@ RSpec.describe 'Merchant invoice Show page' do
 
         visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
 
-        within "#invoice-details" do
+        within "#item-details" do
             expect(page).to have_link('20.0% off Discount with Threshold of 10 Applied')
             expect(page).to have_link('30.0% off Discount with Threshold of 15 Applied')
 

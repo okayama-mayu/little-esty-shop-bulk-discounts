@@ -93,8 +93,8 @@ RSpec.describe 'Merchant Invoices Facade', type: :facade do
 
     invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
 
-    InvoiceItem.create!(quantity: 10, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
-    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
+    ii_1 = InvoiceItem.create!(quantity: 10, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+    ii_2 = InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
 
     discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
     discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
@@ -107,8 +107,8 @@ RSpec.describe 'Merchant Invoices Facade', type: :facade do
     mif = MerchantInvoicesFacade.new(params)
 
     expect(mif.discount_stats).to eq({
-      discount_1a.id.to_s => '20.0% off Discount with Threshold of 10 Applied', 
-      discount_1b.id.to_s => '30.0% off Discount with Threshold of 15 Applied'
+      ii_1.id.to_s => [discount_1a.id, '20.0% off Discount with Threshold of 10 Applied'], 
+      ii_2.id.to_s => [discount_1b.id, '30.0% off Discount with Threshold of 15 Applied']
     })
   end
 end
