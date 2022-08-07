@@ -12,4 +12,8 @@ class AdminInvoicesFacade
   def total_revenue
     @invoice.total_revenue.to_f
   end
+
+  def total_discounts
+    binding.pry 
+  end
 end
