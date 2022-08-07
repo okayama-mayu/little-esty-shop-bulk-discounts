@@ -117,4 +117,42 @@ RSpec.describe 'Merchant invoice Show page' do
             expect(page).to have_content("Total Discounted Revenue: $1,150.00")
         end
     end
+
+    # US 7 
+    # Merchant Invoice Show Page: Link to applied discounts
+    # As a merchant
+    # When I visit my merchant invoice show page
+    # Next to each invoice item I see a link to the show page for the bulk discount that was applied (if any)
+    it 'has a link to the show page for the discounts applied' do 
+        merchant = Merchant.create!(name: 'amazon')
+        
+        customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+        item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
+        item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
+
+        invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+        InvoiceItem.create!(quantity: 10, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+        InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
+
+        discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
+        discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
+
+        visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
+
+        within "#item-details" do
+            expect(page).to have_link('20.0% off Discount with Threshold of 10 Applied')
+            expect(page).to have_link('30.0% off Discount with Threshold of 15 Applied')
+
+            click_link '30.0% off Discount with Threshold of 15 Applied'
+        end
+
+        expect(current_path).to eq "/merchants/#{merchant.id}/discounts/#{discount_1b.id}"
+    end
+
+    # <% @facade.discount_stats.each do |discount_id, string| %>
+    #     <%= link_to string, merchant_discount_path(@facade.merchant, discount_id.to_i) %>
+    #     <br>
+    # <% end %>
 end
