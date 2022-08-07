@@ -21,6 +21,7 @@ class MerchantInvoicesFacade
   def discount_stats
     stats = Hash.new 
     @invoice.all_discounts.map do |invoice_item| 
+      binding.pry 
       stats[invoice_item.id.to_s] = [invoice_item.discount_id, "#{invoice_item.max_disc}% off Discount with Threshold of #{invoice_item.count_threshold} Applied"]
     end
     stats 

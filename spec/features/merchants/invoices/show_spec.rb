@@ -140,15 +140,20 @@ RSpec.describe 'Merchant invoice Show page' do
         discount_1b = merchant.discounts.create!(discount: 30, threshold: 15)
 
         visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
+        save_and_open_page
 
         within "#item-details" do
             expect(page).to have_link('20.0% off Discount with Threshold of 10 Applied')
             expect(page).to have_link('30.0% off Discount with Threshold of 15 Applied')
 
             click_link '30.0% off Discount with Threshold of 15 Applied'
-            save_and_open_page
         end
 
         expect(current_path).to eq "/merchants/#{merchant.id}/discounts/#{discount_1b.id}"
     end
+
+    # <% @facade.discount_stats.each do |discount_id, string| %>
+    #     <%= link_to string, merchant_discount_path(@facade.merchant, discount_id.to_i) %>
+    #     <br>
+    # <% end %>
 end

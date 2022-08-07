@@ -37,5 +37,6 @@ class Invoice < ApplicationRecord
     .select('invoice_items.*, max(discounts.discount) as max_disc, max(discounts.threshold) as count_threshold, max(discounts.id) as discount_id, max(discounts.discount) / 100  * invoice_items.quantity * invoice_items.unit_price/100.0 as item_discount')
     .group(:id)
     .order(:id)
+    binding.pry 
   end
 end
