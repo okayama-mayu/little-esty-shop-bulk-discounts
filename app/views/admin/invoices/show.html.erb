@@ -17,9 +17,9 @@
   </div>
   
 
-  <p>Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
-  <p>Total Revenue: <%= number_to_currency(@facade.total_revenue)%></p>
-  <p>Total Discounted Revenue: <%= number_to_currency(@facade.discounted_revenue) %></p>
+  <p>Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p><br>
+  <p>Total Revenue: <%= number_to_currency(@facade.total_revenue)%></p><br>
+  <p>Total Discounted Revenue: <%= number_to_currency(@facade.discounted_revenue) %></p><br>
 
   <h2>Customer: </h2>
   <p><%= @facade.customer_name%></p>
