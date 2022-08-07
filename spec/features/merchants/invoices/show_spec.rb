@@ -64,8 +64,9 @@ RSpec.describe 'Merchant invoice Show page' do
         visit "/merchants/#{merchant.id}/invoices/#{invoice_1.id}"
 
         within "#invoice-details" do
-            expect(page).to have_content("Total Revenue: $50.22")
+            expect(page).to have_content("Total Revenue: $5,022.00")
         end
+        # <p> Total Revenue: <%= number_to_currency(@facade.merchant.total_revenue(@facade.invoice.id).to_f/100 ) %> </p>
     end
 
     it 'has a select field to update the item status ' do

@@ -7,7 +7,7 @@
 
     <p> Status: <%= @facade.invoice.status %> </p>
     <p> Created on: <%= @facade.invoice.created_at.strftime("%A, %B %d, %Y") %> </p>
-    <p> Total Revenue: <%= number_to_currency(@facade.merchant.total_revenue(@facade.invoice.id).to_f/100 ) %> </p>
+    <p> Total Revenue: <%= number_to_currency(@facade.invoice.total_revenue) %> </p>
     <h2> customer: </h2>
     <p>  <%= @facade.invoice.customer.first_name  %> <%= @facade.invoice.customer.last_name  %> </p>
 </div>

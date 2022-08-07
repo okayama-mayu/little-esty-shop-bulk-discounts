@@ -78,7 +78,7 @@ RSpec.describe Invoice, type: :model do
     end
 
     describe '#total_discounts' do 
-      it 'shows total discounted revenue generated from all items on invoice' do
+      it 'shows total discount amount generated from all items on invoice' do
         merchant = Merchant.create!(name: 'amazon')
         
         customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
@@ -88,7 +88,7 @@ RSpec.describe Invoice, type: :model do
 
         invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
 
-        InvoiceItem.create!(quantity: 2, unit_price: 50, status: 'shipped', item: item_1, invoice: invoice_1)
+        InvoiceItem.create!(quantity: 15, unit_price: 50, status: 'shipped', item: item_1, invoice: invoice_1)
         InvoiceItem.create!(quantity: 15, unit_price: 100, status: 'packaged', item: item_2, invoice: invoice_1)
 
         discount_1a = merchant.discounts.create!(discount: 20, threshold: 10)
