@@ -13,4 +13,8 @@ class MerchantInvoicesFacade
 
     discounts.sum
   end
+
+  def discounted_rev
+    @invoice.total_revenue - total_discounts
+  end
 end
