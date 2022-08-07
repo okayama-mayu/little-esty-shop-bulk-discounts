@@ -145,6 +145,10 @@ RSpec.describe 'Merchant invoice Show page' do
         within "#invoice-details" do
             expect(page).to have_link('20.0% off Discount with Threshold of 10 Applied')
             expect(page).to have_link('30.0% off Discount with Threshold of 15 Applied')
+
+            click_link '30.0% off Discount with Threshold of 15 Applied'
         end
+
+        expect(current_path).to eq "/merchants/#{merchant.id}/discounts/#{discount_1b.id}"
     end
 end
