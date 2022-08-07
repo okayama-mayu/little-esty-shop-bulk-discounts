@@ -4,7 +4,8 @@ class Admin::InvoicesController < ApplicationController
     end
 
     def show
-      @invoice = Invoice.find(params[:id])
+      @facade = AdminInvoicesFacade.new(params)
+      # @invoice = Invoice.find(params[:id])
     end
 
     def update
