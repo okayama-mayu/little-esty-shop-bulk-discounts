@@ -13,6 +13,8 @@
 
     <p> Total Discounted Revenue: <%= number_to_currency(@facade.discounted_rev) %> </p><br>
     
+    <% binding.pry %>
+
     <h2> customer: </h2>
     <p>  <%= @facade.invoice.customer.first_name  %> <%= @facade.invoice.customer.last_name  %> </p>
 </div>
