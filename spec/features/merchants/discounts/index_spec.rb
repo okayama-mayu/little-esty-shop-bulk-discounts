@@ -114,6 +114,7 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
 
     visit merchant_discounts_path(merchant_1)
+    save_and_open_page
     
     within('#holidays') do 
       expect(page).to have_content "Upcoming Holidays"
