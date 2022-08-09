@@ -479,13 +479,13 @@ RSpec.describe Merchant, type: :model do
       end
     end
 
-    describe '#has_pending_invoice' do 
-      it 'returns true if Merchant has any pending Invoices' do 
+    describe '#pending_invoices' do 
+      it 'returns the pending invoices of a Merchant' do 
         Faker::UniqueGenerator.clear 
         merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
 
-        item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
-        item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
+        item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant_1.id)
+        item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant_1.id)
 
         discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
         discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
@@ -502,7 +502,7 @@ RSpec.describe Merchant, type: :model do
         InvoiceItem.create!(quantity: 2, unit_price: 5000, status: 'pending', item: item_1, invoice: invoice_2)
         InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'pending', item: item_2, invoice: invoice_2)
 
-        expect(merchant.has_pending_invoice).to eq true 
+        expect(merchant_1.pending_invoices).to eq [invoice_2]
       end
     end
   end
