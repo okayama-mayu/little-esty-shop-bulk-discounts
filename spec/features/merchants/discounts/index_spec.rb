@@ -123,4 +123,34 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
       expect(page).to have_content "Thanksgiving Day: 2022-11-24" 
     end
   end 
+
+  # Extension 1 
+  # When an invoice is pending, a merchant should not be able to delete or edit a bulk discount that applies to any of their items on that invoice.
+  it 'does not allow a Discount to be deleted if the Merchant has a pending Invoice' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
+    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+    invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+    InvoiceItem.create!(quantity: 2, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
+
+    visit merchant_discounts_path(merchant_1)
+    
+    within('#discount-1') do 
+      click_link 'Delete Discount' 
+    end
+
+    expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
+    expect(page).to have_content 'Merchant has one or more Pending Invoices. Discount cannot be deleted when an Invoice is pending.'
+    expect(page).to have_content('Discount Amount: 15.0 percent, Threshold: 30 items')
+  end
 end
