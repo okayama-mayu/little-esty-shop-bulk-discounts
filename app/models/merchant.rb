@@ -91,4 +91,12 @@ class Merchant < ApplicationRecord
     .distinct
     .where('invoices.status = 0')
   end
+
+  def has_pending_invoices?
+    if pending_invoices.empty? 
+      return false 
+    else 
+      return true 
+    end
+  end
 end
