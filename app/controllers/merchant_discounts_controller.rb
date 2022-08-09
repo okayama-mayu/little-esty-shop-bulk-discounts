@@ -25,9 +25,8 @@ class MerchantDiscountsController < ApplicationController
 
   def pending_invoice_check(discounts, params)
     merchant = Merchant.find(params[:merchant_id])
-    if merchant.has_pending_invoice 
-      flash[:alert] = 'Merchant has one or more Pending Invoices. Discount cannot be deleted when an Invoice is pending.'
-      render :index 
+    if merchant.has_pending_invoices?
+      redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Merchant has one or more Pending Invoices. Discount cannot be deleted when an Invoice is pending.'
     else 
       discount.destroy 
 

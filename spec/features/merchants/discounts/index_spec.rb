@@ -130,8 +130,8 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     Faker::UniqueGenerator.clear 
     merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
 
-    item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
-    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
+    item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant_1.id)
+    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant_1.id)
 
     discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
     discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
@@ -151,6 +151,7 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
 
     expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
     expect(page).to have_content 'Merchant has one or more Pending Invoices. Discount cannot be deleted when an Invoice is pending.'
-    expect(page).to have_content('Discount Amount: 15.0 percent, Threshold: 30 items')
+    expect(page).to have_content('Discount Amount: 20.0 percent, Threshold: 10 items')
+    expect(page).to have_content('Discount Amount: 30.0 percent, Threshold: 15 items')
   end
 end
