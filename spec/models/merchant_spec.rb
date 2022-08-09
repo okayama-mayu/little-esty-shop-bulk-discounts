@@ -478,5 +478,32 @@ RSpec.describe Merchant, type: :model do
         expect(merchant_1.best_day).to eq time_2020
       end
     end
+
+    describe '#has_pending_invoice' do 
+      it 'returns true if Merchant has any pending Invoices' do 
+        Faker::UniqueGenerator.clear 
+        merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+        item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant.id)
+        item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant.id)
+
+        discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+        discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+        customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+        invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+        InvoiceItem.create!(quantity: 20, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+        InvoiceItem.create!(quantity: 1, unit_price: 10000, status: 'shipped', item: item_2, invoice: invoice_1)
+
+        invoice_2 = Invoice.create!(status: 'in progress', customer_id: customer.id)
+
+        InvoiceItem.create!(quantity: 2, unit_price: 5000, status: 'pending', item: item_1, invoice: invoice_2)
+        InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'pending', item: item_2, invoice: invoice_2)
+
+        expect(merchant.has_pending_invoice).to eq true 
+      end
+    end
   end
 end

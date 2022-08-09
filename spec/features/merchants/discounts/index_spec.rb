@@ -138,10 +138,10 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
 
     customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
 
-    invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+    invoice_1 = Invoice.create!(status: 'in progress', customer_id: customer.id)
 
-    InvoiceItem.create!(quantity: 2, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
-    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'packaged', item: item_2, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 2, unit_price: 5000, status: 'pending', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'pending', item: item_2, invoice: invoice_1)
 
     visit merchant_discounts_path(merchant_1)
     

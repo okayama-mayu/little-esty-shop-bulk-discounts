@@ -38,4 +38,8 @@ class Invoice < ApplicationRecord
     .group(:id)
     .order(:id)
   end
+
+  def has_pending_invoice
+    binding.pry 
+  end
 end
