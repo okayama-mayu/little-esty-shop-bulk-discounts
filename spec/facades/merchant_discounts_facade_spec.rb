@@ -96,4 +96,62 @@ RSpec.describe 'MerchantDiscountsFacade', type: :facade do
 
     expect(mdf.next_3_holidays).to eq(["Labor Day: 2022-09-05", "Veterans Day: 2022-11-11", "Thanksgiving Day: 2022-11-24"])
   end
+
+  it 'returns false if it is attached to a pending Invoice' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant_1.id)
+    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant_1.id)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+    invoice_1 = Invoice.create!(status: 'in progress', customer_id: customer.id)
+
+    InvoiceItem.create!(quantity: 2, unit_price: 5000, status: 'pending', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'pending', item: item_2, invoice: invoice_1)
+
+    params = {
+      :controller =>"merchant_discounts", 
+      :action =>"destroy", 
+      :merchant_id => merchant_1.id.to_s, 
+      :id => discount_1b.id.to_s 
+    } 
+
+    mdf = MerchantDiscountsFacade.new(params)
+
+    expect(mdf.discount_deletable?).to eq false 
+  end
+
+  it 'returns true if it is NOT attached to a pending Invoice' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant_1.id)
+    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant_1.id)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+    invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+    InvoiceItem.create!(quantity: 10, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'shipped', item: item_2, invoice: invoice_1)
+
+    params = {
+      :controller =>"merchant_discounts", 
+      :action =>"destroy", 
+      :merchant_id => merchant_1.id.to_s, 
+      :id => discount_1b.id.to_s 
+    } 
+
+    mdf = MerchantDiscountsFacade.new(params)
+
+    expect(mdf.discount_deletable?).to eq true 
+  end
 end

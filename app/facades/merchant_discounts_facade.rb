@@ -39,4 +39,14 @@ class MerchantDiscountsFacade
     end 
     arr 
   end
+
+  def discount_deletable? 
+    pending_invoice = @merchant.pending_invoices
+    pending_invoice.each do |invoice| 
+      invoice.all_discounts.each do |inv_disc| 
+        return false if inv_disc.discount_id == discount.id 
+      end
+    end
+    return true 
+  end
 end

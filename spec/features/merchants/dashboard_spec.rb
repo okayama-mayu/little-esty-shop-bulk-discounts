@@ -558,8 +558,8 @@ RSpec.describe 'Merchant Dashboard' do
 
         visit "merchants/#{merchant_1.id}/dashboard" 
 
-        invoice_1a_date = invoice_1a.created_at.strftime("%A, %B%e, %Y")
-        invoice_1b_date = invoice_1b.created_at.strftime("%A, %B%e, %Y")
+        invoice_1a_date = invoice_1a.created_at.strftime("%A, %B %e, %Y")
+        invoice_1b_date = invoice_1b.created_at.strftime("%A, %B %e, %Y")
 
         within("#item-0") do 
             expect(page).to have_content(invoice_1a_date)
