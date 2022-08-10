@@ -19,20 +19,19 @@ class MerchantDiscountsController < ApplicationController
   end
 
   def destroy 
-    binding.pry 
     # discount = Discount.find(params[:id])
     facade = MerchantDiscountsFacade.new(params)
-    pending_invoice_check(facade, params)
+    pending_invoice_check(facade)
   end
 
-  def pending_invoice_check(discounts, params)
-    merchant = Merchant.find(params[:merchant_id])
-    if merchant.has_pending_invoices?
-      redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Merchant has one or more Pending Invoices. Discount cannot be deleted when an Invoice is pending.'
-    else 
-      discount.destroy 
+  def pending_invoice_check(facade)
+    merchant = facade.merchant
+    if facade.discount_deletable?
+      facade.discount.destroy 
 
       redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount has been successfully deleted.'
+    else 
+      redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount cannot be deleted when an Invoice with the Discount is pending.'
     end 
   end
 

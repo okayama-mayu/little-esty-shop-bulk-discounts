@@ -114,7 +114,6 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
 
     visit merchant_discounts_path(merchant_1)
-    save_and_open_page
     
     within('#holidays') do 
       expect(page).to have_content "Upcoming Holidays"
@@ -146,7 +145,7 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     visit merchant_discounts_path(merchant_1)
     
     within('#discount-1') do 
-      click_link 'Delete Discount' 
+      click_link 'Delete Discount'
     end
 
     expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
@@ -179,7 +178,7 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     end
 
     expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
-    expect(page).to have_content 'Discount was successfully deleted.'
+    expect(page).to have_content 'Discount has been successfully deleted.'
     expect(page).to_not have_content('Discount Amount: 20.0 percent, Threshold: 10 items')
     expect(page).to have_content('Discount Amount: 30.0 percent, Threshold: 15 items')
   end
