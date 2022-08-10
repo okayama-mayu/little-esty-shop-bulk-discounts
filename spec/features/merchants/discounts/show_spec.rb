@@ -70,4 +70,33 @@ RSpec.describe 'Merchant Discount Show page', type: :feature do
     expect(page).to have_content('Quantity Threshold: 15')
     expect(page).to have_content('Percentage Discount: 30.0%')
   end
+
+  it 'does allow a Discount to be edited if the pending invoice is not on that specific Discount' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant_1.id)
+    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant_1.id)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+    invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+    InvoiceItem.create!(quantity: 10, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'shipped', item: item_2, invoice: invoice_1)
+
+    invoice_2 = Invoice.create!(status: 'in progress', customer_id: customer.id)
+
+    InvoiceItem.create!(quantity: 2, unit_price: 5000, status: 'pending', item: item_1, invoice: invoice_2)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'pending', item: item_2, invoice: invoice_2)
+
+    visit merchant_discount_path(merchant_1, discount_1a)
+
+    click_link 'Edit Discount'
+
+    expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts/#{discount_1a.id}/edit"
+  end
 end

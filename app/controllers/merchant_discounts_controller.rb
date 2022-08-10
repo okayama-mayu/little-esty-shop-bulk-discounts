@@ -21,11 +21,13 @@ class MerchantDiscountsController < ApplicationController
   def destroy 
     # discount = Discount.find(params[:id])
     facade = MerchantDiscountsFacade.new(params)
-    pending_invoice_check(facade)
+    destroy_pending_invoice_check(facade)
   end
 
   def edit 
     @facade = MerchantDiscountsFacade.new(params)
+
+    edit_pending_invoice_check
   end
 
   def update 
@@ -48,7 +50,7 @@ class MerchantDiscountsController < ApplicationController
     end
   end
 
-  def pending_invoice_check(facade)
+  def destroy_pending_invoice_check(facade)
     merchant = facade.merchant
     if facade.discount_deletable?
       facade.discount.destroy 
@@ -56,6 +58,12 @@ class MerchantDiscountsController < ApplicationController
       redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount has been successfully deleted.'
     else 
       redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount cannot be deleted when an Invoice with the Discount is pending.'
+    end 
+  end
+
+  def edit_pending_invoice_check
+    if !@facade.discount_deletable?
+      redirect_to merchant_discount_path(params[:merchant_id], params[:id]), notice: 'Discount cannot be edited when an Invoice with the Discount is pending.'
     end 
   end
 
