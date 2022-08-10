@@ -19,8 +19,10 @@ class MerchantDiscountsController < ApplicationController
   end
 
   def destroy 
-    discount = Discount.find(params[:id])
-    pending_invoice_check(discount, params)
+    binding.pry 
+    # discount = Discount.find(params[:id])
+    facade = MerchantDiscountsFacade.new(params)
+    pending_invoice_check(facade, params)
   end
 
   def pending_invoice_check(discounts, params)
