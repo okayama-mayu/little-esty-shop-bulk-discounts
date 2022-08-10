@@ -126,7 +126,7 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
 
   # Extension 1 
   # When an invoice is pending, a merchant should not be able to delete or edit a bulk discount that applies to any of their items on that invoice.
-  it 'does not allow a Discount to be deleted if the Merchant has a pending Invoice' do 
+  it 'does not allow a Discount to be deleted if the Merchant has a pending Invoice within which the Discount is applied' do 
     Faker::UniqueGenerator.clear 
     merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
 
@@ -150,8 +150,37 @@ RSpec.describe 'Merchant Discounts Index Page', type: :feature do
     end
 
     expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
-    expect(page).to have_content 'Merchant has one or more Pending Invoices. Discount cannot be deleted when an Invoice is pending.'
+    expect(page).to have_content 'Discount cannot be deleted when an Invoice with the Discount is pending.'
     expect(page).to have_content('Discount Amount: 20.0 percent, Threshold: 10 items')
+    expect(page).to have_content('Discount Amount: 30.0 percent, Threshold: 15 items')
+  end
+
+  it 'can still delete a Discount if the Invoice is completed' do 
+    Faker::UniqueGenerator.clear 
+    merchant_1 = Merchant.create!(name: Faker::Name.unique.name, status: 1)
+
+    item_1 = Item.create!(name: 'pet rock', description: 'a rock you pet', unit_price: 10000, merchant_id: merchant_1.id)
+    item_2 = Item.create!(name: 'ferbie', description: 'monster toy', unit_price: 66600, merchant_id: merchant_1.id)
+
+    discount_1a = merchant_1.discounts.create!(discount: 20, threshold: 10)
+    discount_1b = merchant_1.discounts.create!(discount: 30, threshold: 15)
+
+    customer = Customer.create!(first_name: 'Billy', last_name: 'Bob')
+
+    invoice_1 = Invoice.create!(status: 'completed', customer_id: customer.id)
+
+    InvoiceItem.create!(quantity: 10, unit_price: 5000, status: 'shipped', item: item_1, invoice: invoice_1)
+    InvoiceItem.create!(quantity: 15, unit_price: 10000, status: 'shipped', item: item_2, invoice: invoice_1)
+
+    visit merchant_discounts_path(merchant_1)
+    
+    within('#discount-0') do 
+      click_link 'Delete Discount' 
+    end
+
+    expect(current_path).to eq "/merchants/#{merchant_1.id}/discounts"
+    expect(page).to have_content 'Discount was successfully deleted.'
+    expect(page).to_not have_content('Discount Amount: 20.0 percent, Threshold: 10 items')
     expect(page).to have_content('Discount Amount: 30.0 percent, Threshold: 15 items')
   end
 end
