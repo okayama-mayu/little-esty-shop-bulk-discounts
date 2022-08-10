@@ -24,17 +24,6 @@ class MerchantDiscountsController < ApplicationController
     pending_invoice_check(facade)
   end
 
-  def pending_invoice_check(facade)
-    merchant = facade.merchant
-    if facade.discount_deletable?
-      facade.discount.destroy 
-
-      redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount has been successfully deleted.'
-    else 
-      redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount cannot be deleted when an Invoice with the Discount is pending.'
-    end 
-  end
-
   def edit 
     @facade = MerchantDiscountsFacade.new(params)
   end
@@ -57,6 +46,17 @@ class MerchantDiscountsController < ApplicationController
     else 
       redirect_to new_merchant_discount_path(params[:merchant_id]), alert: "Error: Please fill in all fields with numbers."
     end
+  end
+
+  def pending_invoice_check(facade)
+    merchant = facade.merchant
+    if facade.discount_deletable?
+      facade.discount.destroy 
+
+      redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount has been successfully deleted.'
+    else 
+      redirect_to merchant_discounts_path(params[:merchant_id]), notice: 'Discount cannot be deleted when an Invoice with the Discount is pending.'
+    end 
   end
 
   def update_router(facade)
